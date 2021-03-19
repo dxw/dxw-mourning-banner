@@ -16,17 +16,17 @@ All customisation options previously available are hidden except for the banner 
 
 Defaults are set as follows,
 
-- When to display: always
-- Background colour: #000000
-- Text and link colours: #ffffff
-- Position: prepend Body / fixed: no
-- Show in admin: false
+* When to display: always
+* Background colour: #000000
+* Text and link colours: #ffffff
+* Position: prepend Body / fixed: no
+* Show in admin: false
  
 ## Planned iterations
 
-- Replace banner text field with 4 single text line fields,
- - Header / Name of person
- - Lifespan
- - Link text
- - Link URL 
--Strip out erroneous code and tidy styling options based on defaults
+* Replace banner text field with 4 single text line fields,
+    * Header / Name of person
+    * Lifespan
+    * Link text
+    * Link URL 
+* Strip out erroneous code and tidy styling options based on defaults
