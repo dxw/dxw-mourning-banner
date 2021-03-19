@@ -2,8 +2,8 @@
  * Mourning Banner js.
  * Injects a customisable banner.
  */
-jQuery(document).ready(function ($) {
 
+jQuery(document).ready(function ($) {
     // Build styles.
     var style = '<style>';
     style += '.mourning_banner_container {';
