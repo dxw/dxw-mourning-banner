@@ -5,8 +5,8 @@ A stop gap solution while we come up with something more solid / integrated to a
 
 Oringinally requested by GSS and UKSA
 
-https://dxw.zendesk.com/agent/tickets/13864
-https://dxw.zendesk.com/agent/tickets/13933
+[Black mourning banner](https://dxw.zendesk.com/agent/tickets/13933)
+[Adding banner to UKSA and OSR websites](https://dxw.zendesk.com/agent/tickets/13864)
 
 and reflecting [GOV.UK's Types of emergency banners](https://docs.publishing.service.gov.uk/manual/emergency-publishing.html#types-of-emergency-banners)
 
@@ -24,9 +24,10 @@ Defaults are set as follows,
  
 ## Planned iterations
 
-Replace banner text field with 4 single text line fields,
-
-- Header / Name of person
-- Lifespan
-- Link text
-- Link URL
+- Replace banner text field with 4 single text line fields,
+ - Header / Name of person
+ - Lifespan
+ - Link text
+ - Link URL
+ 
+-Strip out erroneous code and tidy styling options based on defaults
