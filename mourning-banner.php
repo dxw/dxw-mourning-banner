@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Invalid request.' );
 }
 
-$mourning_banner_defaults = array(
+$mourning_banner_defaults = [
 	'banner_message'       => '<h2>Name of person</h2><p>birth year - death year</p><br /><a href="#">Link to bio</a>',
 	'when_to_display'      => 'always',
 	'background_colour'    => '#000000',
@@ -26,19 +26,20 @@ $mourning_banner_defaults = array(
 	'position'             => 'prepend',
 	'fixed'                => 'no',
 	'show_in_admin'        => '0',
-);
+];
 
 
 /** Defines the default settings for the plugin */
-defined( 'MOURNING_BANNER_DEFAULTS' ) or define( 'MOURNING_BANNER_DEFAULTS', maybe_serialize( $mourning_banner_defaults ) );
+defined( 'MOURNING_BANNER_DEFAULTS' ) or define( 'MOURNING_BANNER_DEFAULTS',
+	maybe_serialize( $mourning_banner_defaults ) );
 /** Register the activation functionality to set the default settings */
 register_activation_hook( __FILE__, 'mourning_banner_plugin_activation' );
 /** Init MOURNING_Banner class when plugins are loaded */
-add_action( 'plugins_loaded', array( 'Mourning_Banner', 'init' ) );
+add_action( 'plugins_loaded', [ 'Mourning_Banner', 'init' ] );
 /** Init MOURNING_Banner_Options class when plugins are loaded and in the admin */
 if ( is_admin() ) {
 	require_once plugin_dir_path( __FILE__ ) . 'mourning-banner_options.php';
-	add_action( 'plugins_loaded', array( 'Mourning_Banner_Options', 'init' ) );
+	add_action( 'plugins_loaded', [ 'Mourning_Banner_Options', 'init' ] );
 }
 
 /**
@@ -116,7 +117,8 @@ if ( ! class_exists( 'MOURNING_Banner' ) ) :
 		 * Loads the script for the frontend.
 		 */
 		public static function mourning_banner_load_script() {
-			wp_enqueue_script( 'mourning-banner', plugins_url( 'mourning-banner.js', __FILE__ ), array( 'jquery' ), null, true );
+			wp_enqueue_script( 'mourning-banner', plugins_url( 'mourning-banner.js', __FILE__ ), [ 'jquery' ], null,
+				true );
 			wp_localize_script( 'mourning-banner', 'mourning_banner_vars', get_option( 'mourning_banner_options' ) );
 		}
 
@@ -125,10 +127,12 @@ if ( ! class_exists( 'MOURNING_Banner' ) ) :
 		 * Loads the scripts for the backend.
 		 */
 		public static function mourning_banner_load_script_admin() {
-			wp_enqueue_script( 'mourning-banner-admin', plugins_url( 'mourning-banner-admin.js', __FILE__ ), array( 'jquery' ),
+			wp_enqueue_script( 'mourning-banner-admin', plugins_url( 'mourning-banner-admin.js', __FILE__ ),
+				[ 'jquery' ],
 				null,
 				true );
-			wp_localize_script( 'mourning-banner-admin', 'mourning_banner_vars', get_option( 'mourning_banner_options' ) );
+			wp_localize_script( 'mourning-banner-admin', 'mourning_banner_vars',
+				get_option( 'mourning_banner_options' ) );
 		}
 
 
@@ -142,7 +146,7 @@ if ( ! class_exists( 'MOURNING_Banner' ) ) :
 				return;
 			}
 
-			$current_user_roles = array();
+			$current_user_roles = [];
 			$current_user       = wp_get_current_user();
 			if ( $current_user->exists() ) {
 				$current_user_roles = ( array ) $current_user->roles;
@@ -150,21 +154,22 @@ if ( ! class_exists( 'MOURNING_Banner' ) ) :
 
 			// Front end.
 			if ( 'always' === $mourning_banner_options['when_to_display'] ) { // Always.
-				add_action( 'wp_enqueue_scripts', array( __CLASS__, 'mourning_banner_load_script' ) );
+				add_action( 'wp_enqueue_scripts', [ __CLASS__, 'mourning_banner_load_script' ] );
 			}
 			if ( 'loggedin' === $mourning_banner_options['when_to_display']
-				|| in_array( $mourning_banner_options['when_to_display'], $current_user_roles ) ) { // Logged in variations.
-				add_action( 'wp_enqueue_scripts', array( __CLASS__, 'mourning_banner_load_script' ) );
+			     || in_array( $mourning_banner_options['when_to_display'],
+					$current_user_roles ) ) { // Logged in variations.
+				add_action( 'wp_enqueue_scripts', [ __CLASS__, 'mourning_banner_load_script' ] );
 			}
 			if ( 'loggedout' === $mourning_banner_options['when_to_display'] && ! $current_user->exists() ) { // Logged out.
-				add_action( 'wp_enqueue_scripts', array( __CLASS__, 'mourning_banner_load_script' ) );
+				add_action( 'wp_enqueue_scripts', [ __CLASS__, 'mourning_banner_load_script' ] );
 			}
 
 			// Back end.
 			if ( ! empty( $mourning_banner_options['show_in_admin'] ) ) {
 				if ( 'loggedin' === $mourning_banner_options['when_to_display'] || 'always' === $mourning_banner_options['when_to_display']
-					|| in_array( $mourning_banner_options['when_to_display'], $current_user_roles ) ) {
-					add_action( 'admin_enqueue_scripts', array( __CLASS__, 'mourning_banner_load_script_admin' ) );
+				     || in_array( $mourning_banner_options['when_to_display'], $current_user_roles ) ) {
+					add_action( 'admin_enqueue_scripts', [ __CLASS__, 'mourning_banner_load_script_admin' ] );
 				}
 			}
 

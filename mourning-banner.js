@@ -12,8 +12,8 @@ jQuery(document).ready(function ($) {
     style += '}';
     style += '.mourning_banner_wrap {';
     style += 'padding: 0px;';
-    if ( 'yes' === mourning_banner_vars.fixed) {
-    	style += 'position: fixed;';
+    if ('yes' === mourning_banner_vars.fixed) {
+        style += 'position: fixed;';
     }
     style += 'z-index: 10000; border: none; display: block;';
     if (mourning_banner_vars.background_colour) {

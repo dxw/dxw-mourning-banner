@@ -56,16 +56,20 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 		public function mourning_banner_create_admin_page() {
 			$this->mourning_banner_options = get_option( 'mourning_banner_options' ); ?>
 
-			<style type="text/css">
-				#wp-banner_message-editor-container{max-width:70%}
+            <style type="text/css">
+                #wp-banner_message-editor-container {
+                    max-width: 70%
+                }
 
-				.wp-core-ui .button{margin-right:20px}
-			</style>
-			<div class="wrap">
-				<h2>Death of a notable person banner</h2>
-				<p>This plugin should only be activated to display a banner at a national time of mourning.</p>
+                .wp-core-ui .button {
+                    margin-right: 20px
+                }
+            </style>
+            <div class="wrap">
+                <h2>Death of a notable person banner</h2>
+                <p>This plugin should only be activated to display a banner at a national time of mourning.</p>
 
-				<form method="post" action="options.php">
+                <form method="post" action="options.php">
 					<?php
 					settings_fields( 'mourning_banner_option_group' );
 					do_settings_sections( 'mourning-banner-admin' );
@@ -73,8 +77,8 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 					submit_button( 'Reset to defaults settings', 'secondary', 'reset-default', false );
 					submit_button( 'Delete all settings', 'secondary', 'reset-all', false );
 					?>
-				</form>
-			</div>
+                </form>
+            </div>
 		<?php }
 
 		/**
@@ -180,7 +184,7 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 			);
 
 			*/
-	}
+		}
 
 		/**
 		 * Sanitize the settings for the options plugin page
@@ -292,13 +296,13 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 			$roles                   = wp_roles()->get_names();
 			$when_to_display_options = array_merge( $when_to_display_options, $roles );
 			?>
-			<select name="mourning_banner_options[when_to_display]" id="when_to_display">
-				<?php foreach( $when_to_display_options as $value => $label ) :
+            <select name="mourning_banner_options[when_to_display]" id="when_to_display">
+				<?php foreach ( $when_to_display_options as $value => $label ) :
 					$selected = ( isset( $this->mourning_banner_options['when_to_display'] ) && $this->mourning_banner_options['when_to_display'] === $value ) ? 'selected' : '';
 					?>
-					<option value="<?php echo esc_attr( $value ); ?>" <?php echo $selected; ?>><?php echo esc_html( $label ); ?></option>
+                    <option value="<?php echo esc_attr( $value ); ?>" <?php echo $selected; ?>><?php echo esc_html( $label ); ?></option>
 				<?php endforeach; ?>
-			</select>
+            </select>
 			<?php
 		}
 
@@ -348,10 +352,10 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 		public function position_callback() {
 			?> <select name="mourning_banner_options[position]" id="position">
 				<?php $selected = ( isset( $this->mourning_banner_options['position'] ) && $this->mourning_banner_options['position'] === 'prepend' ) ? 'selected' : ''; ?>
-				<option value="prepend" <?php echo $selected; ?>>Prepend</option>
+                <option value="prepend" <?php echo $selected; ?>>Prepend</option>
 				<?php $selected = ( isset( $this->mourning_banner_options['position'] ) && $this->mourning_banner_options['position'] === 'append' ) ? 'selected' : ''; ?>
-				<option value="append" <?php echo $selected; ?>>Append</option>
-				</select> <?php
+                <option value="append" <?php echo $selected; ?>>Append</option>
+            </select> <?php
 		}
 
 		/**
@@ -360,10 +364,10 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 		public function fixed_callback() {
 			?> <select name="mourning_banner_options[fixed]" id="fixed">
 				<?php $selected = ( isset( $this->mourning_banner_options['fixed'] ) && $this->mourning_banner_options['fixed'] === 'no' ) ? 'selected' : ''; ?>
-				<option value="no" <?php echo $selected; ?>>No</option>
+                <option value="no" <?php echo $selected; ?>>No</option>
 				<?php $selected = ( isset( $this->mourning_banner_options['fixed'] ) && $this->mourning_banner_options['fixed'] === 'yes' ) ? 'selected' : ''; ?>
-				<option value="yes" <?php echo $selected; ?>>Yes</option>
-				</select> <?php
+                <option value="yes" <?php echo $selected; ?>>Yes</option>
+            </select> <?php
 		}
 
 		/**
