@@ -28,6 +28,5 @@ Defaults are set as follows,
  - Header / Name of person
  - Lifespan
  - Link text
- - Link URL
- 
+ - Link URL 
 -Strip out erroneous code and tidy styling options based on defaults
