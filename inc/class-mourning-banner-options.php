@@ -13,7 +13,7 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 		/**
 		 * @var array $mourning_banner_options
 		 */
-		private array $mourning_banner_options;
+		private $mourning_banner_options;
 
 		/**
 		 * Init the object.
