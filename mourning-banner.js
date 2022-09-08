@@ -17,19 +17,21 @@ jQuery(document).ready(function ($) {
     }
     style += 'z-index: 10000; border: none; display: block;';
     if (mourning_banner_vars.background_colour) {
-        style += 'background-color: ' + mourning_banner_vars.background_colour + ';';
+        style += 'background-color: ' + mourning_banner_vars.background_colour + ' !important;';
     }
     style += 'text-align: left; font-size: 1em;min-height: 30px';
     style += '}';
     style += '.mourning_banner {';
     style += 'padding: 5px 20px; ';
+    style += '}';
+    style += '.mourning_banner, .mourning_banner * {';
     if (mourning_banner_vars.text_colour) {
-        style += 'color: ' + mourning_banner_vars.text_colour + ';';
+        style += 'color: ' + mourning_banner_vars.text_colour + ' !important;';
     }
     style += '}';
     style += '.mourning_banner a {';
     if (mourning_banner_vars.link_colour) {
-        style += 'color: ' + mourning_banner_vars.link_colour + ';';
+        style += 'color: ' + mourning_banner_vars.link_colour + '!important;';
     }
     style += '}';
     style += '</style>';
