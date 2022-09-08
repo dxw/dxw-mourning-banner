@@ -31,11 +31,18 @@ jQuery(document).ready(function ($) {
     if (mourning_banner_vars.link_colour) {
         style += 'color: ' + mourning_banner_vars.link_colour + ';';
     }
-    style += '}';
+    style += 'text-decoration:underline;}';
+    style += '.mourning_banner a:hover {text-decoration:none;}';
+    style += '.mourning_banner a:focus {outline: 3px solid transparent;color: #0b0c0c;background-color: #fd0;box-shadow: 0 -2px #fd0,0 4px #0b0c0c;text-decoration: none;}';
+    style += '.mourning_banner img { max-width:100px;height:auto;margin: 0 0 2rem;}';
+    style += '@media (min-width:22.5em){.mourning_banner { display:flex;gap:2rem; }}';
+    style += '@media (min-width:22.5em){.mourning_banner img { margin-bottom:0; }}';
+    style += '.mourning_banner h2 { margin-top:0 }';
+    style += '.mourning_banner p:last-of-type { margin-bottom:0 }';
     style += '</style>';
 
     // Build html.
-    var banner = '<div class="mourning_banner_container"><div class="mourning_banner_wrap container"><div class="mourning_banner">' + mourning_banner_vars.banner_message + '</div></div></div>';
+    var banner = '<div class="mourning_banner_container"><div class="mourning_banner_wrap container"><div class="mourning_banner"><img src="https://picsum.photos/200/300" alt="portrait of ..."><div class="mourning_banner__content">' + mourning_banner_vars.banner_message + '</div></div></div></div>';
 
     // Output.
     if ('prepend' === mourning_banner_vars.position) {
