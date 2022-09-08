@@ -29,6 +29,7 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 		public function __construct() {
 			add_action( 'admin_menu', [ $this, 'mourning_banner_add_plugin_page' ] );
 			add_action( 'admin_init', [ $this, 'mourning_banner_page_init' ] );
+            add_action( 'admin_footer',[ $this, 'media_selector_print_scripts'] );
 		}
 
 		/**
@@ -88,14 +89,59 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 				'mourning-banner-admin' // page
 			);
 
-			add_settings_field(
-				'banner_message', // id
-				'Banner text', // title
-				[ $this, 'banner_message_callback' ], // callback
-				'mourning-banner-admin', // page
-				'mourning_banner_setting_section', // section
-				[ 'label_for' => 'banner_message' ] // label
-			);
+            add_settings_field(
+                'person_name', //id
+                'Person name',
+                [ $this, 'person_name_callback'],
+                'mourning-banner-admin',
+                'mourning_banner_setting_section',
+                [ 'label_for' => 'person_name']
+            );
+
+            add_settings_field(
+                'person_birth_date', //id
+                'Person Birth Date',
+                [ $this, 'person_birth_date_callback'],
+                'mourning-banner-admin',
+                'mourning_banner_setting_section',
+                [ 'label_for' => 'person_birth_date']
+            );
+
+            add_settings_field(
+                'person_death_date', //id
+                'Person Death Date',
+                [ $this, 'person_death_date_callback'],
+                'mourning-banner-admin',
+                'mourning_banner_setting_section',
+                [ 'label_for' => 'person_death_date']
+            );
+
+            add_settings_field(
+                'banner_image', //id
+                'Banner image',
+                [ $this, 'banner_image_callback'],
+                'mourning-banner-admin',
+                'mourning_banner_setting_section',
+                [ 'label_for' => 'banner_image']
+            );
+
+            add_settings_field(
+                'banner_message', // id
+                'Banner text', // title
+                [ $this, 'banner_message_callback' ], // callback
+                'mourning-banner-admin', // page
+                'mourning_banner_setting_section', // section
+                [ 'label_for' => 'banner_message' ] // label
+            );
+
+            add_settings_field(
+                'banner_link', // id
+                'Banner link', // title
+                [ $this, 'banner_link_callback' ], // callback
+                'mourning-banner-admin', // page
+                'mourning_banner_setting_section', // section
+                [ 'label_for' => 'banner_link' ] // label
+            );
 
 			add_settings_field(
 				'all_hidden', // id
@@ -147,6 +193,22 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 			}
 
 			$sanitary_values = [];
+            if ( isset( $input['person_name'] ) ) {
+                $sanitary_values['person_name'] = sanitize_text_field( $input['person_name'] );
+            }
+
+            if ( isset( $input['person_birth_date'] ) ) {
+                $sanitary_values['person_birth_date'] = $input['person_birth_date'];
+            }
+
+            if ( isset( $input['person_death_date'] ) ) {
+                $sanitary_values['person_death_date'] = $input['person_death_date'];
+            }
+
+            if (isset($input['banner_image'])) {
+                $sanitary_values['banner_image'] = $input['banner_image'];
+            }
+
 			if ( isset( $input['banner_message'] ) ) {
 				$sanitary_values['banner_message'] = wp_kses_post( $input['banner_message'] );
 			}
@@ -206,6 +268,50 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 
 		}
 
+        /**
+         * Person name setup
+         */
+        public function person_name_callback() {
+            $content = isset( $this->mourning_banner_options['person_name'] ) ? $this->mourning_banner_options['person_name'] : '';
+            printf(
+                '<input type="text" id="person_name" name="mourning_banner_options[person_name]" value="%s" />',
+                isset( $content ) ? esc_attr( $content ) : ''
+            );
+        }
+
+        /**
+         * Person birth date setup
+         */
+        public function person_birth_date_callback() {
+            $content = isset( $this->mourning_banner_options['person_birth_date'] ) ? $this->mourning_banner_options['person_birth_date'] : '';
+            printf(
+                '<input type="date" id="person_birth_date" name="mourning_banner_options[person_birth_date]" value="%s" />',
+                isset( $content ) ? esc_attr( $content ) : ''
+            );
+        }
+
+        /**
+         * Person death date setup
+         */
+        public function person_death_date_callback() {
+            $content = isset( $this->mourning_banner_options['person_death_date'] ) ? $this->mourning_banner_options['person_death_date'] : '';
+            printf(
+                '<input type="date" id="person_death_date" name="mourning_banner_options[person_death_date]" value="%s" />',
+                isset( $content ) ? esc_attr( $content ) : ''
+            );
+        }
+
+        public function banner_image_callback() {
+            wp_enqueue_media();
+
+            ?><div class='banner-image-wrapper'>
+                <img id='banner-image-preview' src='' width='100' height='100' style='max-height: 100px; width: 100px;'>
+            </div>
+            <input id="upload_image_button" type="button" class="button" value="<?php _e( 'Upload image' ); ?>" />
+            <input type='hidden' name='banner_image' id='banner_image' name='mourning_banner_options[banner_image]' value=''><?php
+
+        }
+
 		/**
 		 * All hidden fields setup.
 		 */
@@ -251,5 +357,69 @@ if ( ! class_exists( 'Mourning_Banner_Options' ) ) :
 			);
 		}
 
+
+        public function media_selector_print_scripts() {
+            $my_saved_attachment_post_id = isset( $this->mourning_banner_options['banner_image']) ? $this->mourning_banner_options['banner_image'] : 0;
+
+            ?><script type='text/javascript'>
+
+                jQuery( document ).ready( function( $ ) {
+
+                    // Uploading files
+                    var file_frame;
+                    var wp_media_post_id = wp.media.model.settings.post.id; // Store the old id
+                    var set_to_post_id = <?php echo $my_saved_attachment_post_id; ?>; // Set this
+
+                    jQuery('#upload_image_button').on('click', function( event ){
+
+                        event.preventDefault();
+
+                        // If the media frame already exists, reopen it.
+                        if ( file_frame ) {
+                            // Set the post ID to what we want
+                            file_frame.uploader.uploader.param( 'post_id', set_to_post_id );
+                            // Open frame
+                            file_frame.open();
+                            return;
+                        } else {
+                            // Set the wp.media post id so the uploader grabs the ID we want when initialised
+                            wp.media.model.settings.post.id = set_to_post_id;
+                        }
+
+                        // Create the media frame.
+                        file_frame = wp.media.frames.file_frame = wp.media({
+                            title: 'Select a image to upload',
+                            button: {
+                                text: 'Use this image',
+                            },
+                            multiple: false	// Set to true to allow multiple files to be selected
+                        });
+
+                        // When an image is selected, run a callback.
+                        file_frame.on( 'select', function() {
+                            // We set multiple to false so only get one image from the uploader
+                            attachment = file_frame.state().get('selection').first().toJSON();
+
+                            // Do something with attachment.id and/or attachment.url here
+                            $( '#banner-image-preview' ).attr( 'src', attachment.url ).css( 'width', 'auto' );
+                            $( '#banner_image' ).val( attachment.id );
+
+                            // Restore the main post ID
+                            wp.media.model.settings.post.id = wp_media_post_id;
+                        });
+
+                        // Finally, open the modal
+                        file_frame.open();
+                    });
+
+                    // Restore the main ID when the add media button is pressed
+                    jQuery( 'a.add_media' ).on( 'click', function() {
+                        wp.media.model.settings.post.id = wp_media_post_id;
+                    });
+                });
+
+            </script><?php
+
+        }
 	}
 endif;
