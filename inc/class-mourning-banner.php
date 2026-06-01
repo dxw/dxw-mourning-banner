@@ -62,7 +62,13 @@ if ( ! class_exists( 'Mourning_Banner' ) ) :
 		public static function mourning_banner_load_script() {
 			wp_enqueue_script( 'mourning-banner', plugins_url( 'mourning-banner.js', dirname( __FILE__ ) ), [ 'jquery' ], null,
 				true );
-			wp_localize_script( 'mourning-banner', 'mourning_banner_vars', get_option( 'mourning_banner_options' ) );
+
+			$options = get_option( 'mourning_banner_options' );
+			if ( isset( $options['banner_message'] ) ) {
+				$options['banner_message'] = wp_kses_post( html_entity_decode( $options['banner_message'] ) );
+			}
+
+			wp_localize_script( 'mourning-banner', 'mourning_banner_vars', $options );
 		}
 
 
