@@ -17,25 +17,37 @@ jQuery(document).ready(function ($) {
     }
     style += 'z-index: 10000; border: none; display: block;';
     if (mourning_banner_vars.background_colour) {
-        style += 'background-color: ' + mourning_banner_vars.background_colour + ';';
+        style += 'background-color: ' + mourning_banner_vars.background_colour + ' !important;';
     }
-    style += 'text-align: left; font-size: 1em;min-height: 30px';
+    style += 'text-align: left !important; font-size: 1em !important;min-height: 30px';
     style += '}';
-    style += '.mourning_banner {';
+    style += '.mourning_banner {'
     style += 'padding: 5px 20px; ';
+    style += '}';
+    style += '.mourning_banner, .mourning_banner * {';
     if (mourning_banner_vars.text_colour) {
-        style += 'color: ' + mourning_banner_vars.text_colour + ';';
+        style += 'color: ' + mourning_banner_vars.text_colour + ' !important;';
     }
     style += '}';
     style += '.mourning_banner a {';
     if (mourning_banner_vars.link_colour) {
-        style += 'color: ' + mourning_banner_vars.link_colour + ';';
+        style += 'color: ' + mourning_banner_vars.link_colour + ' !important;';
     }
-    style += '}';
+    style += 'text-decoration:underline !important;}';
+    style += '.mourning_banner a:hover {text-decoration:none !important;}';
+    style += '.mourning_banner a:focus {outline: 3px solid transparent;color: #0b0c0c !important;background-color: #fd0 !important;box-shadow: 0 -2px #fd0,0 4px #0b0c0c;text-decoration: none !important;}';
+    style += '.mourning_banner img { max-width:100px;height:auto;margin: 0 0 2rem !important;}';
+    style += '@media (min-width:22.5em){.mourning_banner { display:flex;gap:2rem; }}';
+    style += '@media (min-width:22.5em){.mourning_banner img { margin-bottom:0 !important; }}';
+    style += '.mourning_banner h2 { margin-top:0 !important; }';
+    style += '.mourning_banner h2 { color:#FFFFFF !important; }';
+    style += '.mourning_banner h3 { color:#FFFFFF !important; }';
+    style += '.mourning_banner p { color:#FFFFFF !important; }';
+    style += '.mourning_banner p:last-of-type { margin-bottom:0; }';
     style += '</style>';
 
     // Build html.
-    var banner = '<div class="mourning_banner_container"><div class="mourning_banner_wrap container"><div class="mourning_banner">' + mourning_banner_vars.banner_message + '</div></div></div>';
+    var banner = '<div class="mourning_banner_container"><div class="mourning_banner_wrap container"><div class="mourning_banner"><img src="https://picsum.photos/200/300" alt="portrait of ..."><div class="mourning_banner__content">' + mourning_banner_vars.banner_message + '</div></div></div></div>';
 
     // Output.
     if ('prepend' === mourning_banner_vars.position) {
